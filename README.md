@@ -48,7 +48,7 @@ Follow these steps to set up the project locally:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/saas-auth-system.git
+   git clone https://github.com/ryryanb/saas-auth-system.git
    cd saas-auth-system
    ```
 
@@ -61,7 +61,7 @@ Follow these steps to set up the project locally:
 
 4. Once the services are up, you can access:
 
-   - **FastAPI Auth Service**: [http://localhost:8000](http://localhost:8000)
+   - **FastAPI Auth Service**: [http://localhost:9000](http://localhost:8000)
    - **Spring Boot App**: [http://localhost:8080](http://localhost:8080)
    - **PostgreSQL Database**: Available to the backend via Docker network.
 
@@ -82,11 +82,11 @@ Here’s an overview of the project structure:
 ```
 saas-auth-system/
 │
-├── backend/                    # Spring Boot App
+├── saas-authentication/                    # Spring Boot App
 │   ├── src/                    # Source code for the Spring Boot backend
 │   └── Dockerfile               # Dockerfile for Spring Boot app
 │
-├── auth/                       # FastAPI Auth service
+├── fastapi/                       # FastAPI Auth service
 │   ├── app/                     # FastAPI codebase
 │   ├── Dockerfile               # Dockerfile for FastAPI app
 │   └── requirements.txt         # Python dependencies
