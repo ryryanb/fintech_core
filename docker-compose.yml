@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  spring-boot-app:
+    build:
+      context: ./saas-authentication
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/saas_auth_db
+      - SPRING_DATASOURCE_USERNAME=${DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+
+  fastapi-auth:
+    build:
+      context: ./fastapi
+    ports:
+      - "9000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${DB_USER}:${DB_PASSWORD}@host.docker.internal:5432/saas_auth_db
