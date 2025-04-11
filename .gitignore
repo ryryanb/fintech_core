@@ -25,4 +25,13 @@ replay_pid*
 
 .env
 *.properties
-.env
+fastapi/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/

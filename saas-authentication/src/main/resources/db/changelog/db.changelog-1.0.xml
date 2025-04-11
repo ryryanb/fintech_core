@@ -20,5 +20,20 @@
         </createTable>
     </changeSet>
 
+    <!-- Add name, address, and tenant_id columns to users table -->
+    <changeSet author="developer" id="2" runOnChange="true">
+        <addColumn tableName="users">
+            <column name="name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="address" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="tenant_id" type="integer">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
     <!-- Add more changes as needed -->
 </databaseChangeLog>
