@@ -67,6 +67,7 @@ async def login(request: LoginRequest, db: AsyncSession = Depends(get_db)):
         logger.exception(f"An unexpected error occurred during login: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
+
 @router.get("/protected")
 async def protected(current_user: dict = Depends(get_current_user)):
     return {"user": current_user}
