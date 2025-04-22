@@ -17,6 +17,7 @@ psycopg2==2.9.10
 psycopg2-binary==2.9.10
 pyasn1==0.4.8
 pydantic==2.11.2
+pydantic-settings==2.8.1
 pydantic_core==2.33.1
 PyJWT==2.10.1
 python-dotenv==1.1.0
