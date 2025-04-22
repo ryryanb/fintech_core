@@ -1,24 +1,23 @@
 from fastapi import FastAPI, HTTPException, Depends
-from pydantic import BaseModel
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.future import select
-import jwt
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from dotenv import load_dotenv
-import os
-from passlib.context import CryptContext
-from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer
-from jwt import PyJWTError
+from pydantic import BaseModel
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.future import select  # Note: consider updating this to just `from sqlalchemy import select` if using SQLAlchemy 2.x
+from passlib.context import CryptContext
+from dotenv import load_dotenv
+from jwt import PyJWTError  # Only this needed from jwt
+import os
+from datetime import datetime, timedelta
 
 # Load environment variables from .env file
 load_dotenv()
 # Retrieve environment variables
 DATABASE_URL = os.getenv("DATABASE_URL")
 JWT_SECRET = os.getenv("JWT_SECRET")
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 
 if not JWT_SECRET:
     raise RuntimeError("JWT_SECRET is not set. Please set it in your .env file.")
