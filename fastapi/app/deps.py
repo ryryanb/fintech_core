@@ -18,12 +18,15 @@ async def get_db():
         yield session
 
 async def get_current_user(token: str = Depends(oauth2_scheme)):
+
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
-        email: str = payload.get("email")
-        if email is None:
+        email = payload.get("sub")  or payload.get("email")# 'sub' is standard for user identity
+        if not email:
             raise HTTPException(status_code=401, detail="Invalid token")
-        return payload
+
+        return payload  # or a User object based on DB lookup
+
     except PyJWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
