@@ -10,7 +10,7 @@ app = FastAPI()
 origins = [
     "http://localhost:3000",  # React dev server
     "http://127.0.0.1:3000",
-    "https://transaction-frontend-three.vercel.app"
+    "https://transaction-frontend-three.vercel.app",
 ]
 app.add_middleware(
     CORSMiddleware,
