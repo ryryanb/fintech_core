@@ -36,7 +36,8 @@ async def get_current_user(
 ):
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
-        email = payload.get("sub") or payload.get("email")
+        print(payload)
+        email = payload.get("email")
 
         if not email:
             raise HTTPException(status_code=401, detail="Invalid token")
@@ -58,7 +59,7 @@ async def get_current_user(
 async def get_or_create_user_from_google(session: AsyncSession, google_user_info: dict):
 
     #google_user_info = await resp.json()  # ⬅️ this unpacks the JSON body
-
+    print(google_user_info)
     email = google_user_info["email"]
     name = google_user_info.get("name", "")
     profile_picture = google_user_info.get("picture", "")
@@ -69,6 +70,7 @@ async def get_or_create_user_from_google(session: AsyncSession, google_user_info
 
     if user:
         # User exists, return it
+        print(user)
         return user
 
     # 2. User does not exist, create a new one

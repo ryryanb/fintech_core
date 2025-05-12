@@ -52,12 +52,13 @@ async def google_callback(code: str, session: AsyncSession = Depends(get_db)):
 
         # Now get or create the user in your database
         user = await get_or_create_user_from_google(session, user_info)  # ✅ pass the user_info
-
-
+        print(user)
+        print("here")
         # Now create your own JWT
         my_jwt = jwt.encode({
             "sub": str(user.id),  # or email, depends on your system
             "provider": "google",
+            "email":user.email
         }, settings.JWT_SECRET, algorithm="HS256")
 
         return {"access_token": my_jwt, "token_type": "bearer"}
