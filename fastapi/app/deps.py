@@ -16,7 +16,7 @@ JWT_SECRET = os.getenv("JWT_SECRET")
 async def get_db():
     async with SessionLocal() as session:
         yield session
-
+'''
 async def get_current_user(token: str = Depends(oauth2_scheme)):
 
     try:
@@ -29,6 +29,29 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 
     except PyJWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
+'''
+async def get_current_user(
+        token: str = Depends(oauth2_scheme),
+        session: AsyncSession = Depends(get_db)
+):
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+        email = payload.get("sub") or payload.get("email")
+
+        if not email:
+            raise HTTPException(status_code=401, detail="Invalid token")
+
+        result = await session.execute(select(UserDB).where(UserDB.email == email))
+        user = result.scalar_one_or_none()
+
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        return user
+
+    except PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
 
 
 
