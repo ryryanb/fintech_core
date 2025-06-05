@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - auth-service/deployment.yaml
+  - auth-service/service.yaml
+  - transaction-service/deployment.yaml
+  - transaction-service/service.yaml
+  - frontend/deployment.yaml
+  - frontend/service.yaml
+
+commonLabels:
+  app.kubernetes.io/part-of: fintech-core 
