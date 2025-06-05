@@ -11,16 +11,22 @@ app = FastAPI()
 origins = [
     "http://localhost:3000",  # React dev server
     "http://127.0.0.1:3000",
+    "https://fintech-core-frontend.vercel.app",  # Vercel deployed frontend
     "https://transaction-frontend-three.vercel.app",
     "https://*.vercel.app"
 ]
+
+# Configure CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,           # Allowed origins
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],             # Allow all HTTP methods
-    allow_headers=["*"],             # Allow all headers
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Explicitly list allowed methods
+    allow_headers=["*"],
+    expose_headers=["*"],
+    max_age=600,  # Cache preflight requests for 10 minutes
 )
+
 # Include your authentication routes
 app.include_router(auth_router)
 app.include_router(oauth_router)

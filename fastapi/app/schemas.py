@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class User(BaseModel):
     email: str
@@ -7,8 +7,7 @@ class User(BaseModel):
     address: str
     tenant_id: int
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class LoginRequest(BaseModel):
     email: str
