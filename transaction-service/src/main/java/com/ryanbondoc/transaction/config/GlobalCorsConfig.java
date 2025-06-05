@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import java.util.Arrays;
 
 @Configuration
 public class GlobalCorsConfig {
@@ -17,14 +18,16 @@ public class GlobalCorsConfig {
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin(allowedDomain); // Frontend URL
-        corsConfiguration.addAllowedMethod("GET");
-        corsConfiguration.addAllowedMethod("POST");
-        corsConfiguration.addAllowedMethod("PUT");
-        corsConfiguration.addAllowedMethod("DELETE");
-        corsConfiguration.addAllowedHeader("Authorization");
-        corsConfiguration.addAllowedHeader("Content-Type");
+        corsConfiguration.setAllowedOrigins(Arrays.asList(
+            allowedDomain,
+            "http://localhost:3000",
+            "https://fintech-core-frontend.vercel.app"
+        ));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
+        corsConfiguration.setExposedHeaders(Arrays.asList("*"));
         corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
