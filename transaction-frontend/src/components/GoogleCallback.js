@@ -36,7 +36,7 @@ const GoogleCallback = () => {
     };
 
     handleGoogleCallback();
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, googleCallbackUrl]);
 
   return (
     <div>

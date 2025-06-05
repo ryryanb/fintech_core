@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export default function PayPalCheckout() {
   const [amount, setAmount] = useState('');
-  const [currency, setCurrency] = useState('USD');
+  const currency = 'USD';
 
   const createOrder = async () => {
     try {
