@@ -1,189 +1,183 @@
+# FinTech Core
 
-# SaaS Auth System
+FinTech Core is a comprehensive microservices-based platform designed to provide essential financial technology infrastructure for startups. It offers a robust foundation for building fintech applications with features including authentication, transaction processing, and payment integration.
 
-This project is a **SaaS Authentication System** built using **Spring Boot** for the backend and **FastAPI** for authentication. The application is dockerized for easy deployment and uses **PostgreSQL** as the database.
+## 🌟 Features
 
-## Table of Contents
+- **Authentication Service** (FastAPI)
+  - JWT-based authentication
+  - Multi-tenant support
+  - Google OAuth integration
+  - Role-based access control
 
-1. [Introduction](#introduction)
-2. [Technologies Used](#technologies-used)
-3. [Prerequisites](#prerequisites)
-4. [Getting Started](#getting-started)
-5. [Project Structure](#project-structure)
-6. [Environment Variables](#environment-variables)
-7. [Docker Setup](#docker-setup)
-8. [Troubleshooting](#troubleshooting)
-9. [Contributing](#contributing)
-10. [License](#license)
+- **Transaction Service** (Spring Boot)
+  - Payment processing
+  - Transaction history
+  - Multiple payment gateway integration
+  - Secure transaction handling
 
-## Introduction
+- **Payment Integration**
+  - PayPal integration
+  - Stripe integration
+  - Extensible payment gateway architecture
 
-This project provides a basic authentication system for a SaaS application. It includes two main components:
+- **Frontend Demo** (React)
+  - Modern React-based UI
+  - Responsive design
+  - Secure authentication flow
+  - Payment processing demonstration
 
-- **Spring Boot App**: Handles the main business logic and services.
-- **FastAPI App**: Manages the authentication processes such as login, registration, and token management.
+## 🏗 Architecture
 
-Both services are configured to run in **Docker** containers, and PostgreSQL is used for storing user data and authentication tokens.
+```
+FinTech Core
+├── fastapi-auth/           # Authentication microservice (FastAPI)
+├── transaction-service/    # Transaction processing service (Spring Boot)
+├── transaction-frontend/   # Demo frontend application (React)
+└── docker-compose.yml     # Container orchestration
+```
 
-## Technologies Used
+## 🚀 Getting Started
 
-- **Spring Boot**: Backend for managing user accounts, authorization, and business logic.
-- **FastAPI**: Fast API server for handling authentication.
-- **PostgreSQL**: Database for storing user data and authentication tokens.
-- **Docker**: Containerization of the application for easy deployment.
+### Prerequisites
 
-## Prerequisites
+- Docker and Docker Compose
+- PostgreSQL
+- Node.js (for local frontend development)
+- Java 17 (for local backend development)
+- Python 3.9+ (for authentication service)
 
-Before running this project, make sure you have the following installed:
-
-1. **Docker**: [Install Docker](https://www.docker.com/get-started)
-2. **Docker Compose**: [Install Docker Compose](https://docs.docker.com/compose/install/)
-3. **Git**: [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-4. **Python (for FastAPI)**: [Install Python](https://www.python.org/downloads/)
-5. **Java (for Spring Boot)**: [Install OpenJDK 17](https://adoptopenjdk.net/)
-
-## Getting Started
-
-Follow these steps to set up the project locally:
+### Environment Setup
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/ryryanb/saas-auth-system.git
-   cd saas-auth-system
-   ```
-
-2. Set up the environment variables by creating a `.env` file in the root of the project (see the [Environment Variables](#environment-variables) section for more details).
-
-3. Build and run the application using Docker Compose:
-   ```bash
-   docker-compose up --build
-   ```
-
-4. Once the services are up, you can access:
-
-   - **FastAPI Auth Service**: [http://localhost:9000](http://localhost:8000)
-   - **Spring Boot App**: [http://localhost:8080](http://localhost:8080)
-   - **PostgreSQL Database**: Available to the backend via Docker network.
-
-5. The FastAPI service and Spring Boot application will start in separate containers, and you can view logs using:
-   ```bash
-   docker-compose logs -f
-   ```
-
-6. To shut down the services, run:
-   ```bash
-   docker-compose down
-   ```
-
-## Project Structure
-
-Here’s an overview of the project structure:
-
-```
-saas-auth-system/
-│
-├── saas-authentication/                    # Spring Boot App
-│   ├── src/                    # Source code for the Spring Boot backend
-│   └── Dockerfile               # Dockerfile for Spring Boot app
-│
-├── fastapi/                       # FastAPI Auth service
-│   ├── app/                     # FastAPI codebase
-│   ├── Dockerfile               # Dockerfile for FastAPI app
-│   └── requirements.txt         # Python dependencies
-│
-├── .env                         # Environment variables (ignore in version control)
-├── docker-compose.yml           # Docker Compose configuration
-├── .gitignore                   # Git ignore configuration
-└── README.md                    # Project documentation
+```bash
+git clone https://github.com/yourusername/fintech-core.git
+cd fintech-core
 ```
 
-## Environment Variables
+2. Create a `.env` file in the root directory:
+```env
+# Database Configuration
+DB_USER=your_db_user
+DB_PASSWORD=your_db_password
 
-Create a `.env` file in the root directory with the following variables (replace the values with your own settings):
+# PayPal Configuration
+PAYPAL_CLIENT_ID=your_paypal_client_id
+PAYPAL_CLIENT_SECRET=your_paypal_client_secret
+
+# Stripe Configuration
+STRIPE_API_KEY=your_stripe_key
+
+# JWT Configuration
+JWT_SECRET=your_jwt_secret
+```
+
+3. Start the services:
+```bash
+docker-compose up
+```
+
+### Service Endpoints
+
+- Authentication Service: http://localhost:5001
+- Transaction Service: http://localhost:8086
+- Frontend Application: http://localhost:3000
+
+## 📚 API Documentation
+
+### Authentication Service (FastAPI)
+- POST `/login` - User authentication
+- POST `/register` - User registration
+- GET `/auth/google/login` - Google OAuth login
+- GET `/auth/google/callback` - Google OAuth callback
+
+### Transaction Service (Spring Boot)
+- POST `/api/paypal/create-order` - Create PayPal order
+- POST `/api/stripe/create-checkout-session` - Create Stripe session
+- GET `/api/transactions` - Get transaction history
+- POST `/api/payments` - Process payment
+
+## 🔒 Security
+
+- JWT-based authentication
+- HTTPS encryption
+- CORS configuration
+- Role-based access control
+- Secure payment processing
+
+## 🧪 Testing
+
+Each service includes its own test suite:
 
 ```bash
-# PostgreSQL database
-DB_HOST=postgres
-DB_PORT=5432
-DB_NAME=saas_db
-DB_USER=yourusername
-DB_PASSWORD=yourpassword
+# Authentication Service
+cd fastapi-auth
+pytest
 
-# FastAPI and Spring Boot settings
-FASTAPI_HOST=fastapi-auth
-FASTAPI_PORT=8000
-SPRING_BOOT_HOST=spring-boot-app
-SPRING_BOOT_PORT=8080
+# Transaction Service
+cd transaction-service
+./mvnw test
 
-# JWT Secrets and configurations
-JWT_SECRET_KEY=your_jwt_secret_key
-JWT_ALGORITHM=HS256
+# Frontend
+cd transaction-frontend
+npm test
 ```
 
-**Note**: You should ensure that the `.env` file is added to `.gitignore` to prevent it from being pushed to your version control system.
+## 🛠 Development
 
-## Docker Setup
+### Local Development Setup
 
-The project uses **Docker Compose** to manage multiple containers, including:
-
-- **PostgreSQL**: Database for storing authentication data.
-- **FastAPI**: Authentication API server.
-- **Spring Boot**: Backend API server.
-
-To set up the project, simply use the `docker-compose` command:
-
-### Build and Run the Containers
-
+1. Authentication Service:
 ```bash
-docker-compose up --build
+cd fastapi-auth
+python -m venv venv
+source venv/bin/activate  # or `venv\Scripts\activate` on Windows
+pip install -r requirements.txt
+uvicorn app.main:app --reload
 ```
 
-This will pull the necessary Docker images (if they are not available locally), build the containers, and start the services.
-
-### Stopping the Services
-
-To stop the services, run:
-
+2. Transaction Service:
 ```bash
-docker-compose down
+cd transaction-service
+./mvnw spring-boot:run
 ```
 
-This will stop and remove all running containers.
+3. Frontend:
+```bash
+cd transaction-frontend
+npm install
+npm start
+```
 
-## Troubleshooting
+## 📦 Deployment
 
-### Common Issues
+The project is containerized and can be deployed using Docker Compose or Kubernetes.
 
-1. **FastAPI not starting**: 
-   - Ensure that the `.env` file is correctly set up and all environment variables are correct.
-   - Check the FastAPI container logs for detailed error messages:
-     ```bash
-     docker-compose logs -f fastapi-auth
-     ```
+### Docker Compose Deployment
+```bash
+docker-compose up -d
+```
 
-2. **Database connection issues**:
-   - Verify the database credentials in your `.env` file.
-   - Check if PostgreSQL is running properly by inspecting the logs:
-     ```bash
-     docker-compose logs -f postgres
-     ```
+## 🤝 Contributing
 
-3. **Missing Docker images**:
-   - Run `docker-compose pull` to pull the latest images if you encounter issues with missing images.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## Contributing
-
-We welcome contributions to this project. If you have ideas for improvements or bug fixes, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature or fix.
-3. Make your changes and commit them.
-4. Push your changes to your forked repository.
-5. Submit a pull request.
-
-Please ensure that your code passes all tests before submitting a pull request.
-
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- FastAPI for the authentication service
+- Spring Boot for the transaction service
+- React for the frontend implementation
+- PayPal and Stripe for payment integration
+
+## 📞 Support
+
+For support, please open an issue in the GitHub repository or contact the maintainers.
 
