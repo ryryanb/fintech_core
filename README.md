@@ -2,6 +2,11 @@
 
 FinTech Core is a comprehensive microservices-based platform designed to provide essential financial technology infrastructure for startups. It offers a robust foundation for building fintech applications with features including authentication, transaction processing, and payment integration.
 
+Live demo:
+Frontend: https://transaction-frontend-three.vercel.app
+Auth service: https://fintech-core-auth-service.vercel.app/docs
+Transaction service: https://transaction-service-dd9l.onrender.com
+
 ## 🌟 Features
 
 - **Authentication Service** (FastAPI)
