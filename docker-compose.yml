@@ -1,16 +1,6 @@
 version: '3'
 
 services:
-  spring-boot-app:
-    build:
-      context: ./saas-authentication
-    ports:
-      - "8080:8080"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/saas_auth_db
-      - SPRING_DATASOURCE_USERNAME=${DB_USER}
-      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
-
   fastapi-auth:
     build:
       context: ./fastapi
@@ -20,3 +10,31 @@ services:
       - DATABASE_URL=postgresql+asyncpg://${DB_USER}:${DB_PASSWORD}@host.docker.internal:5432/saas_auth_db
     command: >
       uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload
+
+  transaction-frontend:
+    build:
+      context: ./transaction-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - fastapi-auth
+
+  transaction-service:
+    build:
+      context: ./transaction-service
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/saas_auth_db
+      - SPRING_DATASOURCE_USERNAME=${DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - STRIPE_API_KEY=${STRIPE_API_KEY}
+      - PAYPAL_CLIENT_ID=${PAYPAL_CLIENT_ID}
+      - PAYPAL_CLIENT_SECRET=${PAYPAL_CLIENT_SECRET}
+      - PAYPAL_MODE=sandbox
+      - PAYPAL_BASE_URL=https://api-m.sandbox.paypal.com
+      - JWT_SECRET=${JWT_SECRET}
+      - CORS_ALLOWED_DOMAIN=http://localhost:3000
+      - TOKEN_SERVICE_URL=http://spring-boot-app:8080
+    depends_on:
+      - fastapi-auth
