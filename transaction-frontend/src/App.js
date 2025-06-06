@@ -1,8 +1,6 @@
 // src/App.js
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import PayPalCheckout from './components/PayPalCheckout';
-import StripeCheckout from './components/StripeCheckout';
 import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import GoogleCallback from './components/GoogleCallback';
