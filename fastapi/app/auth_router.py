@@ -11,8 +11,8 @@ router = APIRouter()
 
 GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
 GOOGLE_USERINFO_URL = "https://openidconnect.googleapis.com/v1/userinfo"
-FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:3000')
-BACKEND_URL = os.getenv('BACKEND_URL', 'http://localhost:5001')
+FRONTEND_URL = os.getenv('FRONTEND_URL', 'https://fintech-core-frontend.vercel.app')
+BACKEND_URL = os.getenv('BACKEND_URL', 'https://fintech-core-auth-service.vercel.app')
 GOOGLE_REDIRECT_URI = f"{BACKEND_URL}/auth/google/callback"
 
 @router.get("/auth/google/login")
