@@ -5,12 +5,13 @@ from app.config import settings
 from app.deps import get_or_create_user_from_google, get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.responses import RedirectResponse
+import os
 
 router = APIRouter()
 
 GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
 GOOGLE_USERINFO_URL = "https://openidconnect.googleapis.com/v1/userinfo"
-FRONTEND_URL = "http://localhost:3000"
+FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:3000')  # Default to localhost in development
 
 @router.get("/auth/google/login")
 async def google_login():
