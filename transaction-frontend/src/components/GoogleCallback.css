@@ -1,0 +1,38 @@
+.google-callback {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+}
+
+.callback-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.loading-message h2,
+.error-message h2 {
+  color: #2d3748;
+  margin-bottom: 1rem;
+}
+
+.loading-message p,
+.error-message p {
+  color: #718096;
+  margin-bottom: 0.5rem;
+}
+
+.error-message h2 {
+  color: #e53e3e;
+}
+
+.error-message p {
+  color: #822727;
+} 

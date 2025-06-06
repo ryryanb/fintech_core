@@ -6,6 +6,7 @@ import StripeCheckout from './components/StripeCheckout';
 import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import GoogleCallback from './components/GoogleCallback';
+import Dashboard from './components/Dashboard';
 import './App.css';
 
 function App() {
@@ -36,13 +37,7 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <div className="dashboard-container">
-                <h1 className="dashboard-header">Transaction Payment Portal</h1>
-                <div className="payment-methods">
-                  <PayPalCheckout />
-                  <StripeCheckout />
-                </div>
-              </div>
+              <Dashboard />
             </ProtectedRoute>
           }
         />
