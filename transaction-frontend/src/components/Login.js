@@ -1,26 +1,34 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import './Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [tenantId, setTenantId] = useState(0);  // Default to tenant_id 0
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const tenantId = 0; // Default tenant ID as hidden field
   
-  // Add fallback URL and logging
-  const authServiceBaseUrl = process.env.REACT_APP_AUTH_SERVICE_BASE_URL;
+  const authServiceBaseUrl = process.env.REACT_APP_AUTH_SERVICE_BASE_URL || 'http://localhost:5001';
   const loginUrl = `${authServiceBaseUrl}/login`;
 
-  // Log the configuration on component mount
   useEffect(() => {
     console.log('Auth Service Base URL:', authServiceBaseUrl);
   }, [authServiceBaseUrl]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('Attempting login to:', loginUrl);
+    setIsLoading(true);
+    setError(null);
+    
+    console.log('Login attempt:', {
+      url: loginUrl,
+      email,
+      tenant_id: tenantId,
+      // Don't log password for security
+    });
 
     try {
       if (!authServiceBaseUrl) {
@@ -39,31 +47,45 @@ const Login = () => {
             "Content-Type": "application/json",
             "Accept": "application/json"
           },
-          withCredentials: true // Important for CORS with credentials
+          withCredentials: true
         }
       );
 
-      console.log('Login response:', response);
-      localStorage.setItem("jwt_token", response.data.access_token);
-      navigate('/dashboard');
-    } catch (err) {
-      console.error('Login error:', err);
-      if (err.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error('Error response:', err.response.data);
-        console.error('Error status:', err.response.status);
-        console.error('Error headers:', err.response.headers);
-        setError(`Server error: ${err.response.data.detail || 'Unknown error'}`);
-      } else if (err.request) {
-        // The request was made but no response was received
-        console.error('No response received:', err.request);
-        setError('No response from server. Please try again later.');
+      console.log('Login successful:', {
+        status: response.status,
+        headers: response.headers,
+      });
+
+      if (response.data && response.data.access_token) {
+        localStorage.setItem("jwt_token", response.data.access_token);
+        navigate('/dashboard');
       } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error('Error setting up request:', err.message);
-        setError(err.message || "Invalid credentials. Please try again.");
+        throw new Error('No access token received');
       }
+    } catch (err) {
+      console.error('Login error details:', {
+        message: err.message,
+        response: err.response ? {
+          status: err.response.status,
+          data: err.response.data,
+          headers: err.response.headers
+        } : 'No response',
+        request: err.request ? 'Request was made but no response received' : 'Request setup failed'
+      });
+
+      if (err.response) {
+        // Server responded with error
+        const errorMessage = err.response.data?.detail || err.response.data?.message || 'Invalid credentials';
+        setError(`Error: ${errorMessage}`);
+      } else if (err.request) {
+        // Request made but no response
+        setError('Unable to reach the authentication server. Please try again later.');
+      } else {
+        // Error setting up request
+        setError(err.message || "An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -76,7 +98,7 @@ const Login = () => {
       const res = await fetch(`${authServiceBaseUrl}/auth/google/login`);
       const data = await res.json();
       if (data.auth_url) {
-        window.location.href = data.auth_url;  // Redirect to Google login
+        window.location.href = data.auth_url;
       } else {
         setError("Failed to initiate Google login.");
       }
@@ -87,55 +109,77 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      {!authServiceBaseUrl && (
-        <div style={{ color: 'red', marginBottom: '1rem' }}>
-          Warning: Authentication service URL is not configured
-        </div>
-      )}
-
-      <form onSubmit={handleLogin}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+    <div className="login-page">
+      <div className="login-container">
+        <div className="login-header">
+          <h1>Welcome Back</h1>
+          <p>Please sign in to continue</p>
         </div>
 
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+        {!authServiceBaseUrl && (
+          <div className="warning-message">
+            Warning: Authentication service URL is not configured
+          </div>
+        )}
 
-        <div>
-          <label htmlFor="tenant_id">Tenant ID</label>
-          <input
-            type="number"
-            id="tenant_id"
-            value={tenantId}
-            onChange={(e) => setTenantId(Number(e.target.value))}
-            required
-          />
-        </div>
+        <form onSubmit={handleLogin} className="login-form">
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="Enter your email"
+              className="form-input"
+              disabled={isLoading}
+            />
+          </div>
 
-        {error && <p className="error">{error}</p>}
-        <button type="submit">Login</button>
-      </form>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Enter your password"
+              className="form-input"
+              disabled={isLoading}
+            />
+          </div>
 
-      <hr />
+          {error && <div className="error-message">{error}</div>}
+          
+          <button 
+            type="submit" 
+            className="login-button"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Signing in...' : 'Sign In'}
+          </button>
 
-      <button onClick={handleGoogleLogin}>Sign in with Google</button>
+          <div className="divider">
+            <span>OR</span>
+          </div>
+
+          <button 
+            type="button" 
+            onClick={handleGoogleLogin}
+            className="google-button"
+            disabled={isLoading}
+          >
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" 
+              alt="Google Logo"
+              className="google-icon"
+            />
+            Sign in with Google
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

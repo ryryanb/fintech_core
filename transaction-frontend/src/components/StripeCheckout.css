@@ -1,0 +1,97 @@
+.stripe-checkout {
+  background: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.stripe-checkout h3 {
+  color: #635bff; /* Stripe purple */
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.stripe-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stripe-button {
+  background-color: #635bff;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.stripe-button:hover {
+  background-color: #5851e5;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(99, 91, 255, 0.2);
+}
+
+.stripe-button:active {
+  background-color: #4b44cc;
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.stripe-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.stripe-button.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.stripe-button.loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top-color: white;
+  border-radius: 50%;
+  animation: stripe-loading 0.8s linear infinite;
+  margin-left: 8px;
+}
+
+@keyframes stripe-loading {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: rgba(220, 53, 69, 0.1);
+  border-radius: var(--border-radius);
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .stripe-checkout {
+    padding: 1rem;
+  }
+
+  .stripe-button {
+    width: 100%;
+  }
+} 

@@ -6,25 +6,43 @@ import StripeCheckout from './components/StripeCheckout';
 import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import GoogleCallback from './components/GoogleCallback';
+import './App.css';
 
 function App() {
   return (
-    <div style={{ padding: '2rem' }}>
+    <div className="app-container">
       <Routes>
         <Route path="/google/callback" element={<GoogleCallback />} />
         <Route path="/" element={<Login />} />
-        <Route path="/payment-success" element={<h2>Payment successful! 🎉</h2>} />
-        <Route path="/payment-cancel" element={<h2>Payment canceled.</h2>} />
+        <Route 
+          path="/payment-success" 
+          element={
+            <div className="success-message">
+              <h2>Payment successful! 🎉</h2>
+              <p>Thank you for your payment. Your transaction has been completed successfully.</p>
+            </div>
+          } 
+        />
+        <Route 
+          path="/payment-cancel" 
+          element={
+            <div className="cancel-message">
+              <h2>Payment canceled</h2>
+              <p>Your payment has been canceled. No charges were made.</p>
+            </div>
+          } 
+        />
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <>
-                <h1>Transaction Payment Portal</h1>
-                <PayPalCheckout />
-                <hr />
-                <StripeCheckout />
-              </>
+              <div className="dashboard-container">
+                <h1 className="dashboard-header">Transaction Payment Portal</h1>
+                <div className="payment-methods">
+                  <PayPalCheckout />
+                  <StripeCheckout />
+                </div>
+              </div>
             </ProtectedRoute>
           }
         />

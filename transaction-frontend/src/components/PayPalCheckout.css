@@ -1,0 +1,94 @@
+.paypal-checkout {
+  background: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.paypal-checkout h3 {
+  color: #003087; /* PayPal blue */
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.paypal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.amount-input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.amount-input:focus {
+  outline: none;
+  border-color: #009cde; /* PayPal light blue */
+  box-shadow: 0 0 0 2px rgba(0, 156, 222, 0.2);
+}
+
+.paypal-button {
+  background-color: #009cde;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.paypal-button:hover {
+  background-color: #008ac5;
+}
+
+.paypal-button:active {
+  background-color: #0070a0;
+}
+
+.paypal-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+/* Currency display */
+.currency-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Loading state */
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .paypal-checkout {
+    padding: 1rem;
+  }
+
+  .paypal-button {
+    width: 100%;
+  }
+} 
