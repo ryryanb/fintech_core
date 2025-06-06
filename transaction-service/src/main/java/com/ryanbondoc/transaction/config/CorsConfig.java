@@ -1,55 +1,23 @@
 package com.ryanbondoc.transaction.config;
 
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-import java.util.Arrays;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class CorsConfig {
+public class CorsConfig implements WebMvcConfigurer {
+	
+	@Value("${cors.allowed.domain}")
+	 private String allowedDomain;
 
-    @Value("${cors.allowed.origins:http://localhost:3000,https://fintech-core-frontend.vercel.app}")
-    private String[] allowedOrigins;
-
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        
-        // Allow specified origins
-        Arrays.stream(allowedOrigins).forEach(config::addAllowedOrigin);
-        
-        // Allow common HTTP methods
-        config.addAllowedMethod("GET");
-        config.addAllowedMethod("POST");
-        config.addAllowedMethod("PUT");
-        config.addAllowedMethod("DELETE");
-        config.addAllowedMethod("OPTIONS");
-        config.addAllowedMethod("PATCH");
-        
-        // Allow common headers
-        config.addAllowedHeader("Authorization");
-        config.addAllowedHeader("Content-Type");
-        config.addAllowedHeader("Accept");
-        config.addAllowedHeader("Origin");
-        config.addAllowedHeader("X-Requested-With");
-        config.addAllowedHeader("Access-Control-Request-Method");
-        config.addAllowedHeader("Access-Control-Request-Headers");
-        
-        // Allow credentials (cookies, authorization headers)
-        config.setAllowCredentials(true);
-        
-        // Expose headers that frontend might need
-        config.addExposedHeader("Authorization");
-        config.addExposedHeader("Location");
-        
-        // Cache preflight requests for 1 hour (3600 seconds)
-        config.setMaxAge(3600L);
-        
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+            .allowedOrigins(allowedDomain)
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+            .allowedHeaders("*")
+            .allowCredentials(true);
     }
 }
