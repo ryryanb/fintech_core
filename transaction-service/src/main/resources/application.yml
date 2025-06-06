@@ -1,5 +1,6 @@
 jwt:
-  publicKey: ${JWT_PUBLIC_KEY}
+  public:
+    key: ${JWT_PUBLIC_KEY}
 
 spring:
   datasource:
@@ -14,22 +15,28 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 server:
   port: 8086
+  error:
+    include-message: always
 
 cors:
   allowed:
-    domain: ${CORS_ALLOWED_DOMAIN}
+    origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,https://fintech-core-frontend.vercel.app}
 
 paypal:
-  mode: ${PAYPAL_MODE:sandbox}
   client:
     id: ${PAYPAL_CLIENT_ID}
     secret: ${PAYPAL_CLIENT_SECRET}
+  mode: ${PAYPAL_MODE:sandbox}
   base-url: ${PAYPAL_BASE_URL:https://api-m.sandbox.paypal.com}
+  brandName: Fintech Core
+  landingPage: LOGIN
+  returnUrl: ${FRONTEND_URL:http://localhost:3000}/payment-success
+  cancelUrl: ${FRONTEND_URL:http://localhost:3000}/payment-cancel
+  userAction: PAY_NOW
 
 stripe:
   api:
