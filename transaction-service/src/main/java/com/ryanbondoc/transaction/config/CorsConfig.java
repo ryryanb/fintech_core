@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import java.util.Arrays;
 
 @Configuration
 public class CorsConfig {
@@ -18,16 +19,28 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         
-        // Allow all specified origins
-        for (String origin : allowedOrigins) {
-            config.addAllowedOrigin(origin);
-        }
+        // Allow specified origins
+        Arrays.stream(allowedOrigins).forEach(config::addAllowedOrigin);
         
-        // Allow all headers and methods
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        // Allow common HTTP methods
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("DELETE");
+        config.addAllowedMethod("OPTIONS");
+        
+        // Allow common headers
+        config.addAllowedHeader("Authorization");
+        config.addAllowedHeader("Content-Type");
+        config.addAllowedHeader("Accept");
+        config.addAllowedHeader("Origin");
+        config.addAllowedHeader("X-Requested-With");
+        
+        // Allow credentials (cookies, authorization headers)
         config.setAllowCredentials(true);
-        config.setMaxAge(3600L); // 1 hour
+        
+        // Cache preflight requests for 1 hour (3600 seconds)
+        config.setMaxAge(3600L);
         
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
