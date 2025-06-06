@@ -8,6 +8,7 @@ services:
       - "5001:5000"
     environment:
       - DATABASE_URL=postgresql+asyncpg://${DB_USER}:${DB_PASSWORD}@host.docker.internal:5432/saas_auth_db
+      - PRIVATE_KEY=${PRIVATE_KEY}
     command: >
       uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload
 
@@ -33,7 +34,7 @@ services:
       - PAYPAL_CLIENT_SECRET=${PAYPAL_CLIENT_SECRET}
       - PAYPAL_MODE=sandbox
       - PAYPAL_BASE_URL=https://api-m.sandbox.paypal.com
-      - JWT_SECRET=${JWT_SECRET}
+      - JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
       - CORS_ALLOWED_DOMAIN=http://localhost:3000
       - TOKEN_SERVICE_URL=http://spring-boot-app:8080
     depends_on:

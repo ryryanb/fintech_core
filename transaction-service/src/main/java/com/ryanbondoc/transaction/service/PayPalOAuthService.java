@@ -54,7 +54,7 @@ public class PayPalOAuthService {
             // If the response is successful, parse the access token
             if (response.getStatusCode() == HttpStatus.OK) {
                 String responseBody = response.getBody();
-                log.info("Response Body: {}", responseBody);
+                //log.info("Response Body: {}", responseBody);
 
                 // Parse and extract the access token from the response
                 // Assuming the response contains a JSON object with access_token

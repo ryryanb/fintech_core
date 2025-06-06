@@ -73,7 +73,7 @@ public class PayPalCheckoutService {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String jsonResponse = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(response.result());
-       // log.info("PayPal Order response:\n{}", jsonResponse);
+        log.info("PayPal Order response:\n{}", jsonResponse);
         return jsonResponse;
   
         

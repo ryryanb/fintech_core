@@ -6,7 +6,17 @@ export default function PayPalCheckout() {
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const currency = 'USD';
+  const [currency, setCurrency] = useState('USD');
+
+  // Supported PayPal currencies
+  const currencies = [
+    { code: 'USD', symbol: '$' },
+    { code: 'EUR', symbol: '€' },
+    { code: 'GBP', symbol: '£' },
+    { code: 'CAD', symbol: 'C$' },
+    { code: 'AUD', symbol: 'A$' },
+    { code: 'JPY', symbol: '¥' }
+  ];
 
   const createOrder = async () => {
     if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
@@ -42,32 +52,53 @@ export default function PayPalCheckout() {
     }
   };
 
+  const getCurrencySymbol = (currencyCode) => {
+    const currency = currencies.find(c => c.code === currencyCode);
+    return currency ? currency.symbol : currencyCode;
+  };
+
   return (
     <div className="paypal-checkout">
       <h3>PayPal Checkout</h3>
       <div className="paypal-form">
-        <div className="currency-display">
-          <span>Currency: {currency}</span>
+        <div className="form-group">
+          <label htmlFor="amount">Amount</label>
+          <div className="amount-input-group">
+            <input
+              type="number"
+              id="amount"
+              className="amount-input"
+              placeholder={`Enter amount in ${currency}`}
+              value={amount}
+              onChange={e => {
+                setAmount(e.target.value);
+                setError('');
+              }}
+              min="0"
+              step="0.01"
+            />
+            <select
+              value={currency}
+              onChange={e => setCurrency(e.target.value)}
+              className="currency-select"
+            >
+              {currencies.map(curr => (
+                <option key={curr.code} value={curr.code}>
+                  {curr.code}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <input
-          type="number"
-          className="amount-input"
-          placeholder="Enter amount"
-          value={amount}
-          onChange={e => {
-            setAmount(e.target.value);
-            setError('');
-          }}
-          min="0"
-          step="0.01"
-        />
+
         {error && <div className="error-message">{error}</div>}
+        
         <button
           className={`paypal-button ${loading ? 'loading' : ''}`}
           onClick={createOrder}
           disabled={loading}
         >
-          {loading ? 'Processing...' : 'Pay with PayPal'}
+          {loading ? 'Processing...' : `Pay ${getCurrencySymbol(currency)}${amount || ''} with PayPal`}
         </button>
       </div>
     </div>

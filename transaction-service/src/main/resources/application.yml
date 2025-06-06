@@ -1,0 +1,36 @@
+jwt:
+  publicKey: ${JWT_PUBLIC_KEY}
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8086
+
+cors:
+  allowed:
+    domain: ${CORS_ALLOWED_DOMAIN}
+
+paypal:
+  mode: ${PAYPAL_MODE:sandbox}
+  client:
+    id: ${PAYPAL_CLIENT_ID}
+    secret: ${PAYPAL_CLIENT_SECRET}
+  base-url: ${PAYPAL_BASE_URL:https://api-m.sandbox.paypal.com}
+
+stripe:
+  api:
+    key: ${STRIPE_API_KEY} 

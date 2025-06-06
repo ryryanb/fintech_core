@@ -41,6 +41,9 @@ async def login(request: LoginRequest, db: AsyncSession = Depends(get_db)):
     logger.debug(f"Received login request: email={request.email}, tenant_id={request.tenant_id}")
 
     try:
+        # Log the start of database query
+        logger.debug("Querying database for user...")
+        
         db_user = await db.execute(
             select(UserDB).filter(
                 UserDB.email == request.email,
@@ -48,24 +51,46 @@ async def login(request: LoginRequest, db: AsyncSession = Depends(get_db)):
             )
         )
         db_user = db_user.scalar_one_or_none()
+        
+        # Log user lookup result
         if db_user:
             logger.debug(f"User found in database: {db_user.email}")
         else:
             logger.debug(f"No user found with email={request.email} and tenant_id={request.tenant_id}")
-        if not db_user or not verify_password(request.password, db_user.password):
-            logger.debug("Invalid credentials provided.")
             raise HTTPException(status_code=401, detail="Invalid credentials")
 
-        token = create_access_token({
-            "email": request.email,
-            "tenant_id": request.tenant_id,
-            "roles": ["user"]
-        })
-        logger.debug(f"Token successfully generated for email={request.email}")
+        # Log password verification attempt
+        logger.debug("Verifying password...")
+        if not verify_password(request.password, db_user.password):
+            logger.debug("Password verification failed")
+            raise HTTPException(status_code=401, detail="Invalid credentials")
+        
+        logger.debug("Password verified successfully")
+
+        # Log token creation attempt
+        logger.debug("Attempting to create access token with RSA-256...")
+        try:
+            token = create_access_token({
+                "email": request.email,
+                "tenant_id": request.tenant_id,
+                "roles": ["user"]
+            })
+            logger.debug("Token generated successfully with RSA-256")
+        except Exception as token_error:
+            logger.exception(f"Token generation failed: {str(token_error)}")
+            raise HTTPException(status_code=500, detail="Error generating authentication token")
+
         return {"access_token": token, "token_type": "bearer"}
+        
+    except HTTPException as he:
+        # Re-raise HTTP exceptions as they are already properly formatted
+        raise he
     except Exception as e:
-        logger.exception(f"An unexpected error occurred during login: {e}")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        # Log the full error details
+        logger.exception(f"Unexpected error during login: {str(e)}")
+        logger.error(f"Error type: {type(e).__name__}")
+        logger.error(f"Error details: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 
 @router.get("/protected")

@@ -54,9 +54,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         this.publicKey = loadPublicKeyFromEnv(publicKeyPem);
                         publicKeyInitialized = true;
 
-                        System.out.println("Public Key (Object): " + publicKey);
+                        
                         String base64PublicKey = Base64.getEncoder().encodeToString(publicKey.getEncoded());
-                        System.out.println("Public Key (Base64): " + base64PublicKey);
+                        
                     } catch (Exception e) {
                         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                         response.getWriter().write("Error loading public key.");
