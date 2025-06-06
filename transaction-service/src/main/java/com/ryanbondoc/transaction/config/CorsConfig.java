@@ -11,7 +11,7 @@ import java.util.Arrays;
 @Configuration
 public class CorsConfig {
 
-    @Value("${cors.allowed.origins}")
+    @Value("${cors.allowed.origins:http://localhost:3000,https://fintech-core-frontend.vercel.app}")
     private String[] allowedOrigins;
 
     @Bean
@@ -28,6 +28,7 @@ public class CorsConfig {
         config.addAllowedMethod("PUT");
         config.addAllowedMethod("DELETE");
         config.addAllowedMethod("OPTIONS");
+        config.addAllowedMethod("PATCH");
         
         // Allow common headers
         config.addAllowedHeader("Authorization");
@@ -35,9 +36,15 @@ public class CorsConfig {
         config.addAllowedHeader("Accept");
         config.addAllowedHeader("Origin");
         config.addAllowedHeader("X-Requested-With");
+        config.addAllowedHeader("Access-Control-Request-Method");
+        config.addAllowedHeader("Access-Control-Request-Headers");
         
         // Allow credentials (cookies, authorization headers)
         config.setAllowCredentials(true);
+        
+        // Expose headers that frontend might need
+        config.addExposedHeader("Authorization");
+        config.addExposedHeader("Location");
         
         // Cache preflight requests for 1 hour (3600 seconds)
         config.setMaxAge(3600L);
