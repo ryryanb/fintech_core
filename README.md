@@ -9,6 +9,63 @@ Auth service: https://fintech-core-auth-service.vercel.app/docs
 
 Transaction service: https://transaction-service-dd9l.onrender.com
 
+## Payment Flow
+
+Follow the steps below to test the payment integration.
+
+### 1. Register a User
+
+Navigate to the Auth Service API documentation and manually register a new user:
+
+**https://fintech-core-auth-service.vercel.app/docs**
+
+**Registration Request**
+
+<img width="1399" height="670" alt="Register Request" src="https://github.com/user-attachments/assets/9b2e9017-6308-4f91-af5d-24a65bc1832d" />
+
+**Registration Response**
+
+<img width="1386" height="480" alt="Registration Response" src="https://github.com/user-attachments/assets/2dde902a-7534-4fdd-b4ca-d79bdebb9436" />
+
+---
+
+### 2. Sign In
+
+Open the FinTech Core frontend and sign in using the credentials you registered in the previous step.
+
+<img width="1227" height="711" alt="Login Screen" src="https://github.com/user-attachments/assets/ff0f53a6-88c7-4376-83d0-b8b80966b3f9" />
+
+---
+
+### 3. Select a Payment Provider
+
+After a successful login, the payment portal is displayed. Choose either **Stripe** or **PayPal** to begin the checkout process.
+
+<img width="1308" height="737" alt="Payment Portal" src="https://github.com/user-attachments/assets/87783b37-1798-4f35-9686-997495f0d7d0" />
+
+---
+
+### 4. Complete the PayPal Checkout
+
+The screenshots below demonstrate a successful PayPal payment flow.
+
+**PayPal Checkout**
+
+<img width="1362" height="725" alt="PayPal Checkout" src="https://github.com/user-attachments/assets/97ba4115-489a-43db-bee9-b483e8baa3f2" />
+
+**Payment Details**
+
+<img width="1421" height="758" alt="PayPal Payment Details" src="https://github.com/user-attachments/assets/30b844f7-eaed-47cd-9fae-233ada04c591" />
+
+---
+
+### 5. Payment Successful
+
+Once the payment has been completed successfully, the application redirects to the success page and displays a confirmation message.
+
+<img width="1053" height="239" alt="Payment Success" src="https://github.com/user-attachments/assets/5bcf5259-e909-4984-8d6d-fde08d56fa28" />
+
+
 ## 🌟 Features
 
 - **Authentication Service** (FastAPI)
