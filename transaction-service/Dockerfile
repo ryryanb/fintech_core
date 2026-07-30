@@ -1,24 +1,25 @@
-# --------- Stage 1: Build the JAR ----------
-FROM openjdk:17-jdk-slim AS build
+# --------- Stage 1: Build the application ----------
+FROM maven:3.9.11-eclipse-temurin-17 AS build
 
-# Install Maven
-RUN apt-get update && apt-get install -y maven
 WORKDIR /app
 
-# Copy your Maven project files
+# Copy Maven files first for better layer caching
 COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Copy source code
 COPY src ./src
 
-# Package the application (without running tests, optional)
+# Build the application
 RUN mvn clean package -DskipTests
 
-# --------- Stage 2: Run the JAR ----------
-FROM openjdk:17-jdk-slim
+# --------- Stage 2: Run the application ----------
+FROM eclipse-temurin:17-jre-jammy
 
 WORKDIR /app
 
-# Copy the built JAR from the build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Command to run the app
+EXPOSE 8080
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
