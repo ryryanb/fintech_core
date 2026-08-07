@@ -3,14 +3,19 @@ package com.ryanbondoc.fintech.customer.service;
 import java.util.List;
 import java.util.UUID;
 
+import com.ryanbondoc.fintech.customer.dto.AddressRequest;
+import com.ryanbondoc.fintech.customer.dto.AddressResponse;
 import com.ryanbondoc.fintech.customer.dto.CustomerRequest;
 import com.ryanbondoc.fintech.customer.dto.CustomerResponse;
-import com.ryanbondoc.fintech.customer.entity.Customer;
 
 public interface CustomerService {
     CustomerResponse createCustomer(CustomerRequest customer);
-    Customer updateCustomer(String customerId, Customer customer);
+    CustomerResponse updateCustomer(String customerId, CustomerRequest customer);
     void deleteCustomer(String customerId);
     List<CustomerResponse> getAllCustomers() ;
     CustomerResponse getCustomerById(UUID id);
+    List<CustomerResponse> searchCustomers(String query);
+    List<AddressResponse> getCustomerAddresses(UUID customerId);
+    AddressResponse addCustomerAddress(UUID customerId,
+                                          AddressRequest request)
 }
