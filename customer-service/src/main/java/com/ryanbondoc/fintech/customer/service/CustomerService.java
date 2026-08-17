@@ -17,5 +17,5 @@ public interface CustomerService {
     List<CustomerResponse> searchCustomers(String query);
     List<AddressResponse> getCustomerAddresses(UUID customerId);
     AddressResponse addCustomerAddress(UUID customerId,
-                                          AddressRequest request)
+                                          AddressRequest request);
 }

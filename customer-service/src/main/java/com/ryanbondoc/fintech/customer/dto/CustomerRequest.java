@@ -4,6 +4,7 @@ public record CustomerRequest(
     String firstName,
     String lastName,
     String email,
-    String status
+    String status,
+    String customerNumber
 ) {
 }

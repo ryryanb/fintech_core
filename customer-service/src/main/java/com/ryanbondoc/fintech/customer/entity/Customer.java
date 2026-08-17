@@ -1,15 +1,20 @@
 package com.ryanbondoc.fintech.customer.entity;
 
 
+import java.time.Instant;
 import java.util.UUID;
 
 import com.ryanbondoc.fintech.customer.enums.KycStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -44,5 +49,22 @@ public class Customer {
 
     private String status;
 
-    private KycStatus kycStatus;
+    @Enumerated(EnumType.STRING)
+@Column(name = "kyc_status")
+private KycStatus kycStatus;
+
+    private Instant createdAt;
+
+private Instant updatedAt;
+
+@PrePersist
+private void onCreate() {
+    this.createdAt = Instant.now();
+    this.updatedAt = Instant.now();
+}
+
+@PreUpdate
+private void onUpdate() {
+    this.updatedAt = Instant.now();
+}
 }

@@ -13,15 +13,17 @@ public class CustomerMapper {
             customer.getId(),
             customer.getFirstName(),
             customer.getLastName(),
-            customer.getStatus()
+            customer.getStatus(), customer.getEmail(), customer.getCustomerNumber()
         );
     }
 
     public Customer toEntity(CustomerRequest request) {
-        Customer customer = new Customer();
-        customer.setFirstName(request.firstName());
-        customer.setLastName(request.lastName());
-        customer.setStatus(request.status());
-        return customer;
-    }
+    Customer customer = new Customer();
+    customer.setFirstName(request.firstName());
+    customer.setLastName(request.lastName());
+    customer.setEmail(request.email());
+    customer.setStatus(request.status());
+    customer.setCustomerNumber(request.customerNumber());
+    return customer;
+}
 }

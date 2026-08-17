@@ -6,6 +6,8 @@ public record CustomerResponse(
     UUID id,
     String firstName,
     String lastName,
-    String status
+    String status, 
+    String email, 
+    String customerNumber
 ) {
 }
