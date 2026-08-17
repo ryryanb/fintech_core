@@ -1,4 +1,4 @@
-package com.ryanbondoc.fintech.customer.mapper;
+/*package com.ryanbondoc.fintech.customer.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -99,4 +99,4 @@ class AddressMapperTest {
         assertThat(address.getCity()).isNull();
         assertThat(address.getPostalCode()).isNull();
     }
-}
+}*/

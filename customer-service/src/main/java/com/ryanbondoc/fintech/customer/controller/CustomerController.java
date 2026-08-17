@@ -25,6 +25,8 @@ import com.ryanbondoc.fintech.customer.dto.CustomerResponse;
 import com.ryanbondoc.fintech.customer.service.AccountService;
 import com.ryanbondoc.fintech.customer.service.CustomerService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
@@ -37,7 +39,7 @@ public class CustomerController {
 
     // POST /customers
     @PostMapping
-    public ResponseEntity<CustomerResponse> createCustomer(@RequestBody CustomerRequest customer) {
+    public ResponseEntity<CustomerResponse> createCustomer(@Valid  @RequestBody CustomerRequest customer) {
         CustomerResponse createdCustomer = customerService.createCustomer(customer);
         return ResponseEntity.status(201).body(createdCustomer);
     }
