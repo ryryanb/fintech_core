@@ -10,7 +10,7 @@ import com.ryanbondoc.fintech.customer.dto.CustomerResponse;
 
 public interface CustomerService {
     CustomerResponse createCustomer(CustomerRequest customer);
-    CustomerResponse updateCustomer(String customerId, CustomerRequest customer);
+    CustomerResponse updateCustomer(UUID customerId, CustomerRequest customer);
     void deleteCustomer(String customerId);
     List<CustomerResponse> getAllCustomers() ;
     CustomerResponse getCustomerById(UUID id);

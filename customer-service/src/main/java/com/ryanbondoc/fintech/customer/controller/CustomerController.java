@@ -62,9 +62,11 @@ public class CustomerController {
 
     // PUT /customers/{id}
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateCustomer(@PathVariable String id, @RequestBody CustomerRequest customer) {
-        customerService.updateCustomer(id, customer);
-        return ResponseEntity.status(204).build();
+    public ResponseEntity<CustomerResponse> updateCustomer(@PathVariable UUID id, @RequestBody CustomerRequest customer) {
+        CustomerResponse response =
+            customerService.updateCustomer(id, customer);
+
+    return ResponseEntity.ok(response);
     }
 
     // DELETE /customers/{id}

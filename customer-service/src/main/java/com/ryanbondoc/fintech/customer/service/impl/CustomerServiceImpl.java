@@ -57,23 +57,45 @@ public class CustomerServiceImpl implements CustomerService {
 
 
 @Override
-public CustomerResponse updateCustomer(String customerId, CustomerRequest customerReq) {
-    Customer existingCustomer = customerRepository.findByCustomerNumber(customerId)
-        .orElseThrow(() -> new BusinessException("Customer not found"));
+public CustomerResponse updateCustomer(
+        UUID customerId,
+        CustomerRequest customerReq) {
 
-    // Rule 3: Email becomes immutable after KYC verification
+    Customer existingCustomer = customerRepository.findById(customerId)
+        .orElseThrow(() ->
+            new CustomerNotFoundException(
+                "Customer not found: " + customerId
+            )
+        );
+
+    // Rule: Email cannot be changed after KYC verification
     if (KycStatus.VERIFIED.equals(existingCustomer.getKycStatus())
             && !existingCustomer.getEmail().equals(customerReq.email())) {
-        throw new BusinessException("Email cannot be changed after KYC verification");
+
+        throw new BusinessException(
+            "Email cannot be changed after KYC verification"
+        );
     }
 
-    // Update only fields that are allowed to change
+    // Rule: Email must be unique across other customers
+    if (!existingCustomer.getEmail().equals(customerReq.email())
+            && customerRepository.existsByEmailAndIdNot(
+                customerReq.email(),
+                customerId)) {
+
+        throw new BusinessException(
+            "Email already exists"
+        );
+    }
+
+    // Update allowed fields
     existingCustomer.setFirstName(customerReq.firstName());
     existingCustomer.setLastName(customerReq.lastName());
     existingCustomer.setEmail(customerReq.email());
     existingCustomer.setStatus(customerReq.status());
 
-    Customer updatedCustomer = customerRepository.save(existingCustomer);
+    Customer updatedCustomer =
+        customerRepository.save(existingCustomer);
 
     return customerMapper.toResponse(updatedCustomer);
 }
